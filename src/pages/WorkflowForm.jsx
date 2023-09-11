@@ -117,16 +117,10 @@ export default function WorkflowsForm() {
               ))}
             </select>
             <textarea
+              className='textarea-form'
               value={workflow.description}
               onChange={ev => setWorkflow({...workflow, description: ev.target.value})}
               placeholder="Descrição do processo"
-              style={{
-                resize: 'both',
-                minHeight: '100px',
-                minWidth: '900px',
-                fontSize: '16px',
-                fontFamily: 'Arial, sans-serif'
-              }}
             />
             <button className="btn">Salvar</button>
           </form>

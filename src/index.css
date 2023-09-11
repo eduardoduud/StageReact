@@ -37,6 +37,37 @@ input:focus {
     border-color: #b44d11;
 }
 
+select {
+    padding: 5px;
+    outline: 0;
+    font-family: Arial, sans-serif;
+    border: 2px solid #e6e6e6;
+    margin: 0 0 15px;
+    transition: all 0.3s;
+}
+
+select:focus {
+    border-color: #b44d11;
+}
+
+.textarea-form {
+    display: flex;
+    outline: 0;
+    resize: both;
+    margin: 0 0 15px;
+    border: 2px solid #e6e6e6;
+    box-sizing: border-box;
+    min-height: 100px;
+    min-width: 900px;
+    font-size: 16px;
+    font-family: Arial, sans-serif;
+    transition: all 0.3s;
+}
+
+.textarea-form:focus {
+    border-color: #b44d11;
+}
+
 pre {
     background: #0d0d0d;
     border-radius: 0.5rem;
@@ -328,3 +359,4 @@ table > tbody > tr > td {
     align-items: center;
     font-size: 10vh;
 }
+

@@ -48,7 +48,7 @@ export default function Setores() {
           <tr>
             <th>ID</th>
             <th>Nome</th>
-            <th>Setor</th>
+            <th>Última modificação</th>
             <th>Criado em</th>
             <th>Ações</th>
           </tr>
@@ -68,7 +68,7 @@ export default function Setores() {
               <tr key={u.id}>
                 <td>{u.id}</td>
                 <td><Link className="workflow" to={'/departments/' + u.id}>{u.name}</Link></td>
-                <td>{u.department}</td>
+                <td>{u.updated_at}</td>
                 <td>{u.created_at}</td>
                 <td>
                   <Link className="btn-edit" to={'/departments/edit/' + u.id}>Editar</Link>
