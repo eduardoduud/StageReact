@@ -14,6 +14,7 @@ export default function WorkflowsForm() {
     description: '',
     htmltext: 'Faça suas anotações aqui',
   })
+  const [originalName, setOriginalName] = useState("");
   const [errors, setErrors] = useState(null)
   const [loading, setLoading] = useState(false)
   const {setNotification} = useStateContext()
@@ -21,12 +22,8 @@ export default function WorkflowsForm() {
   useEffect(() => {
     axiosClient.get('/departments')
     .then(({ data }) => {
-      // Verifique se a propriedade "data" existe na resposta da API
       if (data && Array.isArray(data.data)) {
-        // Acesse diretamente a matriz de setores usando data.data
         const setoresArray = data.data;
-  
-        // Agora você pode usar setoresArray com .map() ou qualquer outra operação desejada
         setDepartments(setoresArray);
       } else {
         console.error('A resposta da API não contém uma matriz de setores válida.');
@@ -48,6 +45,7 @@ export default function WorkflowsForm() {
         .then(({data}) => {
           setLoading(false)
           setWorkflow(data)
+          setOriginalName(data.name);
         })
         .catch(() => {
           setLoading(false)
@@ -86,7 +84,7 @@ export default function WorkflowsForm() {
 
   return (
     <>
-      {workflow.id && <h1>Atualizar Workflow: {workflow.name}</h1>}
+      {workflow.id && <h1>Atualizar Workflow: {originalName}</h1>}
       {!workflow.id && <h1>Novo Workflow</h1>}
       <div className="card animated fadeInDown">
         {loading && (
@@ -124,10 +122,10 @@ export default function WorkflowsForm() {
               placeholder="Descrição do processo"
               style={{
                 resize: 'both',
-                minHeight: '100px', // Altura mínima desejada
+                minHeight: '100px',
                 minWidth: '900px',
-                fontSize: '16px',   // Tamanho da fonte desejado
-                fontFamily: 'Arial, sans-serif' // Fonte desejada
+                fontSize: '16px',
+                fontFamily: 'Arial, sans-serif'
               }}
             />
             <button className="btn">Salvar</button>
