@@ -6,9 +6,11 @@ import {useStateContext} from "../contexts/ContextProvider.jsx";
 export default function WorkflowsForm() {
   const navigate = useNavigate();
   const [departments, setDepartments] = useState([]);
+  const [subdepartments, setSubdepartments] = useState([]);
   let {id} = useParams();
   const [workflow, setWorkflow] = useState({
     id: null,
+    sub_id: null,
     name: '',
     department_id: '',
     description: '',
@@ -23,8 +25,8 @@ export default function WorkflowsForm() {
     axiosClient.get('/departments')
     .then(({ data }) => {
       if (data && Array.isArray(data.data)) {
-        const setoresArray = data.data;
-        setDepartments(setoresArray);
+        const departmentsArray = data.data;
+        setDepartments(departmentsArray);
       } else {
         console.error('A resposta da API não contém uma matriz de setores válida.');
       }
@@ -32,8 +34,16 @@ export default function WorkflowsForm() {
     .catch(error => {
       console.error('Erro ao carregar os setores', error);
     });
-  
 
+    axiosClient.get('/subdepartments')
+    .then(({ data }) => {
+      if (data && Array.isArray(data.data)) {
+        const subDepartmentsArray = data.data;
+        setSubdepartments(subDepartmentsArray);
+      } else {
+        console.error('A resposta da API não contém uma matriz de setores válida.');
+      }
+    })
   }, []);
   
 
@@ -59,7 +69,11 @@ export default function WorkflowsForm() {
       axiosClient.put(`/workflows/${workflow.id}`, workflow)
         .then(() => {
           setNotification('Workflow atualizado com sucesso')
-          navigate(`/departments/${workflow.department_id}`)
+          if (workflow.sub_id !== null){
+            navigate(`/subdepartments/${workflow.sub_id}`);
+          } else {
+              navigate(`/departments/${workflow.department_id}`)
+            }
         })
         .catch(err => {
           const response = err.response;
@@ -71,7 +85,11 @@ export default function WorkflowsForm() {
       axiosClient.post('/workflows', workflow)
         .then(() => {
           setNotification('Workflow criado com sucesso')
-          navigate(`/departments/${workflow.department_id}`)
+          if (workflow.sub_id !== null){
+            navigate(`/subdepartments/${workflow.sub_id}`);
+          } else {
+              navigate(`/departments/${workflow.department_id}`)
+            }
         })
         .catch(err => {
           const response = err.response;
@@ -111,6 +129,17 @@ export default function WorkflowsForm() {
             >
               <option value="">Selecione um Setor</option>
               {departments.map(setor => (
+                <option key={setor.id} value={setor.id}>
+                  {setor.name} - {setor.id}
+                </option>
+              ))}
+            </select>
+            <select
+              onChange={ev => setWorkflow({...workflow, sub_id: ev.target.value})}
+              placeholder="Sub-setor"
+            >
+              <option value="">Selecione um Sub-setor</option>
+              {subdepartments.map(setor => (
                 <option key={setor.id} value={setor.id}>
                   {setor.name} - {setor.id}
                 </option>

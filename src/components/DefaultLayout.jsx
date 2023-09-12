@@ -29,7 +29,7 @@ export default function DefaultLayout() {
     return ( 
         <div id="defaultLayout">
             <aside>
-                <Link to="/workflows">Workflows</Link>
+                {/* <Link to="/workflows">Workflows</Link> */}
                 <Link to="/departments">Setores</Link>
                 <Link to="/users">Usuários</Link>
             </aside>

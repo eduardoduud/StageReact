@@ -1,13 +1,20 @@
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState, useMemo, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { useEditor, EditorContent, BubbleMenu } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import { useStateContext } from '../contexts/ContextProvider.jsx';
 import { RxFontBold, RxFontItalic, RxCode, RxUnderline, RxCodesandboxLogo } from 'react-icons/rx'
 import { RiStrikethrough } from 'react-icons/ri'
+import { PiTextHOneBold, PiTextHTwoBold, PiTextHThreeBold } from 'react-icons/pi'
+import { HiMiniChevronDown } from 'react-icons/hi2'
+import { VscTextSize } from 'react-icons/vsc'
+import { BsListOl, BsListUl, BsThreeDots } from 'react-icons/bs'
 import { BubbleButton } from './BubbleButton.jsx';
 import axiosClient from '../axios-client.js';
 import Underline from '@tiptap/extension-underline';
+import Heading from '@tiptap/extension-heading';
+import OrderedList from '@tiptap/extension-ordered-list';
+import ListItem from '@tiptap/extension-list-item';
 
 export function Editor() {
   const [editorReady, setEditorReady] = useState(false);
@@ -29,6 +36,9 @@ export function Editor() {
     extensions: [
       StarterKit, 
       Underline,
+      Heading,
+      OrderedList,
+      ListItem
     ],
     editorProps: {
       attributes: {
@@ -37,13 +47,20 @@ export function Editor() {
     },
   });
 
+  Heading.configure({
+    levels: [1, 2, 3],
+  });
+
+  OrderedList.configure({
+    itemTypeName: 'listItem',
+  })
+
   const editorContent = useMemo(() => {
     if (editor) {
       setEditorReady(true);
     }
-    // Verifica se o editor está pronto antes de acessá-lo
     if (editor && editor.commands) {
-      editor.commands.setContent(data.htmltext); // Atualiza o conteúdo do editor com os dados locais
+      editor.commands.setContent(data.htmltext);
     }
   }, [editor, data]);
 
@@ -78,6 +95,57 @@ export function Editor() {
     }
   };
 
+  const handleButtonClick = (event) => {
+    event.stopPropagation();
+    toggleDropdown();
+  };
+
+  const handleButtonClick2 = (event) => {
+    event.stopPropagation();
+    toggleDropdown2();
+  };
+
+  const [isDropdownVisible, setIsDropdownVisible] = useState(false);
+  const [isDropdownVisible2, setIsDropdownVisible2] = useState(false);
+  const dropdownRef = useRef(null);
+  const dropdownRef2 = useRef(null);
+
+  const toggleDropdown = () => {
+    setIsDropdownVisible(!isDropdownVisible);
+  };
+
+  const toggleDropdown2 = () => {
+    setIsDropdownVisible2(!isDropdownVisible2);
+  };
+
+  useEffect(() => {
+    const closeDropdownOnOutsideClick = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsDropdownVisible(false);
+      }
+    };
+
+    document.addEventListener("click", closeDropdownOnOutsideClick);
+
+    return () => {
+      document.removeEventListener("click", closeDropdownOnOutsideClick);
+    };
+  }, []);
+
+  useEffect(() => {
+    const closeDropdownOnOutsideClick = (event) => {
+      if (dropdownRef2.current && !dropdownRef2.current.contains(event.target)) {
+        setIsDropdownVisible(false);
+      }
+    };
+
+    document.addEventListener("click", closeDropdownOnOutsideClick);
+
+    return () => {
+      document.removeEventListener("click", closeDropdownOnOutsideClick);
+    };
+  }, []);
+
   return (
     <>
       {data.id && <h1>{data.name} - {data.setor}</h1>}
@@ -100,6 +168,28 @@ export function Editor() {
             <EditorContent key={editorContent} editor={editor} />
             { editor && (
             <BubbleMenu className='bubble-menu' editor={editor}>
+              <BubbleButton onClick={handleButtonClick}>
+                <VscTextSize/>
+                <HiMiniChevronDown/>
+              </BubbleButton>
+              {isDropdownVisible && (
+                <div className="bubble-dropdown-container" ref={dropdownRef}>
+                  <div className="bubble-dropdown-content">
+                    <BubbleButton
+                      onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}>
+                      <PiTextHOneBold/>
+                    </BubbleButton>
+                    <BubbleButton
+                      onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}>
+                      <PiTextHTwoBold/>
+                    </BubbleButton>
+                    <BubbleButton
+                      onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}>
+                      <PiTextHThreeBold/>
+                    </BubbleButton>
+                  </div>
+                </div>
+              )}
               <BubbleButton
                 onClick={() => editor.chain().focus().toggleBold().run()}>
                 <RxFontBold />
@@ -120,6 +210,23 @@ export function Editor() {
                 onClick={() => editor.chain().focus().toggleCode().run()}>
                 <RxCode />
               </BubbleButton>
+              <BubbleButton onClick={handleButtonClick2}>
+                <BsThreeDots/>
+              </BubbleButton>
+              {isDropdownVisible2 && (
+                <div className="bubble-dropdown-container" ref={dropdownRef2}>
+                  <div className="bubble-dropdown-content">
+                    <BubbleButton
+                      onClick={() => editor.chain().focus().toggleOrderedList.run()}>
+                      <BsListOl/>
+                    </BubbleButton>
+                    <BubbleButton
+                      onClick={() => editor.chain().focus().toggleBulletList.run()}>
+                      <BsListUl/>
+                    </BubbleButton>
+                  </div>
+                </div>
+              )}
               <BubbleButton
                 onClick={() => editor.chain().focus().toggleCodeBlock().run()}>
                 <RxCodesandboxLogo />

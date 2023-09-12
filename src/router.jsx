@@ -9,8 +9,9 @@ import Workflow from "./pages/Workflow";
 import Setores from "./pages/Setores";
 import WorkflowForm from "./pages/WorkflowForm";
 import SetorForm from "./pages/SetorForm";
+import SubSetorForm from "./pages/SubSetorForm";
 import UserForm from "./pages/UserForm";
-import { Editor } from "./editor";
+import { Editor } from "./components/editor";
 
 const router = createBrowserRouter([
     {
@@ -51,6 +52,18 @@ const router = createBrowserRouter([
             },
             {
                 path: '/departments/edit/:id',
+                element: <SetorForm key="setorUpdate"/>
+            },
+            {
+                path: '/subdepartments/new',
+                element: <SubSetorForm key="subsetorCreate"/>
+            },
+            {
+                path: '/subdepartments/:id',
+                element: <Workflow key="workflows"/>
+            },
+            {
+                path: '/subdepartments/edit/:id',
                 element: <SetorForm key="setorUpdate"/>
             },
             {

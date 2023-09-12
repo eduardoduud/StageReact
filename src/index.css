@@ -38,6 +38,7 @@ input:focus {
 }
 
 select {
+    display: flex;
     padding: 5px;
     outline: 0;
     font-family: Arial, sans-serif;
@@ -93,12 +94,24 @@ code {
 
 .bubble-menu {
     display: flex;
+    position: fixed;
     flex-direction: row;
-    align-items: center;
+    align-items: start;
     justify-content: center;
-    background-color: rgb(39 39 42);
-    box-shadow: 0px 0px 3px 3px #2c2c2c;
+
     border-radius: 10px;
+    overflow: hidden;
+}
+
+.bubble-dropdown-container {
+    display: flex;
+    position: relative;
+    display: inline-block;
+}
+
+.bubble-dropdown-content {
+    display: flex;
+    flex-direction: column;
     overflow: hidden;
 }
 
@@ -112,11 +125,12 @@ code {
     color: #333333;
     font-size: 18px;
     border-radius: 0px;
-    width: 35px;
+    width: auto;
     height: 25px;
     border: 1px solid #333333;
     transition: 0.3s;
     background-color: #ffffff;
+    font-family: Arial, sans-serif;
   }
   
 .bubble-btn:hover {
