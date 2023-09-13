@@ -25,7 +25,6 @@ export default function SubSetorForm() {
         .get(`/subdepartments/${id}`)
         .then(({ data }) => {
           setLoading(false);
-          console.log(data);
           setSubdepartment(data);
           setOriginalName(data.name);
         })

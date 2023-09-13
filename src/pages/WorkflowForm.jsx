@@ -46,7 +46,6 @@ export default function WorkflowsForm() {
     })
   }, []);
   
-
   if (id) {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     useEffect(() => {
@@ -81,6 +80,13 @@ export default function WorkflowsForm() {
             setErrors(response.data.errors)
           }
         })
+        fetch('https://ntfy.sh/eduardo_stage', {
+          method: 'POST',
+          body: 'Workflow atualizado',
+          headers: {
+              'Authorization': 'Bearer tk_98m0t6gbknq63pvodr2qalvt2yowl'
+            }
+        })
     } else {
       axiosClient.post('/workflows', workflow)
         .then(() => {
@@ -97,9 +103,15 @@ export default function WorkflowsForm() {
             setErrors(response.data.errors)
           }
         })
-    }
+        fetch('https://ntfy.sh/eduardo_stage', {
+          method: 'POST',
+          body: 'Workflow criado',
+          headers: {
+              'Authorization': 'Bearer tk_98m0t6gbknq63pvodr2qalvt2yowl'
+            }
+        })
+      }
   }
-
   return (
     <>
       {workflow.id && <h1>Atualizar Workflow: {originalName}</h1>}

@@ -121,7 +121,7 @@ export default function Workflows() {
     ) : (
       <div>
       <div style={{display: 'flex', justifyContent: "space-between", alignItems: "center"}}>
-        <h1>Sub-setores Workflows</h1>
+        <h1>Sub-Workflows</h1>
         <Link className="btn-add" to="/workflows/new">Adicionar</Link>
       </div>
       <div className="card animated fadeInDown">
@@ -163,7 +163,7 @@ export default function Workflows() {
           }
         </table>
       </div>
-    </div>
+      </div>
     )}
       {!isSubDepartments && (
         <div>
