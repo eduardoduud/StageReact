@@ -1,6 +1,6 @@
 import {Navigate, createBrowserRouter} from "react-router-dom";
-import Signup from "./pages/signup";
-import Login from "./pages/login";
+import Signup from "./pages/Signup";
+import Login from "./pages/Login";
 import Users from "./pages/Users";
 import NotFound from "./pages/NotFound";
 import DefaultLayout from "./components/DefaultLayout";
@@ -11,7 +11,7 @@ import WorkflowForm from "./pages/WorkflowForm";
 import SetorForm from "./pages/SetorForm";
 import SubSetorForm from "./pages/SubSetorForm";
 import UserForm from "./pages/UserForm";
-import { Editor } from "./components/editor";
+import { Editor } from "./components/Editor";
 
 const router = createBrowserRouter([
     {
