@@ -48,6 +48,13 @@ export default function SetorForm() {
             setErrors(response.data.errors);
           }
         });
+        fetch('https://ntfy.sh/eduardo_stage', {
+          method: 'POST',
+          body: 'Setor atualizado',
+          headers: {
+              'Authorization': 'Bearer tk_98m0t6gbknq63pvodr2qalvt2yowl'
+            }
+        })
     } else {
       axiosClient
         .post("/departments", department)
@@ -61,6 +68,13 @@ export default function SetorForm() {
             setErrors(response.data.errors);
           }
         });
+        fetch('https://ntfy.sh/eduardo_stage', {
+          method: 'POST',
+          body: 'Setor criado',
+          headers: {
+              'Authorization': 'Bearer tk_98m0t6gbknq63pvodr2qalvt2yowl'
+            }
+        })
     }
   };
 
