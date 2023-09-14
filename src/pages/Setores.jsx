@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import axiosClient from '../axios-client.js';
 import { Link } from 'react-router-dom';
 import { useStateContext } from '../contexts/ContextProvider.jsx';
+import TableHeader from '../components/table/TableHeader.jsx';
+import TableRow from '../components/table/TableRow.jsx';
 
 export default function Setores() {
   const [departments, setDepartments] = useState([]);
@@ -12,28 +14,30 @@ export default function Setores() {
     getSetores();
   }, []);
 
-  const onDeleteClick = (department) => {
+  const onDeleteClick = async (department) => {
     if (!window.confirm('Tem certeza que deseja deletar este setor?')) {
       return;
     }
-    axiosClient.delete(`/departments/${department.id}`).then(() => {
+
+    try {
+      await axiosClient.delete(`/departments/${department.id}`);
       setNotification('Setor deletado com sucesso');
       getSetores();
-    });
+    } catch (error) {
+      console.error('Erro ao deletar setor:', error);
+    }
   };
 
-  const getSetores = () => {
+  const getSetores = async () => {
     setLoading(true);
-    axiosClient
-      .get('/departments')
-      .then(({ data }) => {
-        setLoading(false);
-        console.log(data);
-        setDepartments(data.data);
-      })
-      .catch(() => {
-        setLoading(false);
-      });
+    try {
+      const response = await axiosClient.get('/departments');
+      setDepartments(response.data.data);
+    } catch (error) {
+      console.error('Erro ao buscar setores:', error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -52,52 +56,20 @@ export default function Setores() {
       </div>
       <div className='card animated fadeInDown'>
         <table>
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Nome</th>
-              <th>Última modificação</th>
-              <th>Criado em</th>
-              <th>Ações</th>
-            </tr>
-          </thead>
-          {loading && (
-            <tbody>
+          <TableHeader />
+          <tbody>
+            {loading ? (
               <tr>
                 <td colSpan='5' className='text-center'>
                   Carregando...
                 </td>
               </tr>
-            </tbody>
-          )}
-          {!loading && (
-            <tbody>
-              {departments.map((u) => (
-                <tr key={u.id}>
-                  <td>{u.id}</td>
-                  <td>
-                    <Link className='workflow' to={'/departments/' + u.id}>
-                      {u.name}
-                    </Link>
-                  </td>
-                  <td>{u.updated_at}</td>
-                  <td>{u.created_at}</td>
-                  <td>
-                    <Link className='btn-edit' to={'/departments/edit/' + u.id}>
-                      Editar
-                    </Link>
-                    &nbsp;
-                    <button
-                      className='btn-delete'
-                      onClick={(ev) => onDeleteClick(u)}
-                    >
-                      Deletar
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          )}
+            ) : (
+              departments.map((u) => (
+                <TableRow key={u.id} data={u} onDeleteClick={onDeleteClick} />
+              ))
+            )}
+          </tbody>
         </table>
       </div>
     </div>

@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import axiosClient from '../axios-client.js';
 import { Link } from 'react-router-dom';
 import { useStateContext } from '../contexts/ContextProvider.jsx';
+import TableHeader from '../components/table/TableHeader.jsx';
+import TableRow from '../components/table/TableRow.jsx';
 
 export default function Users() {
   const [users, setUsers] = useState([]);
@@ -51,48 +53,20 @@ export default function Users() {
       </div>
       <div className='card animated fadeInDown'>
         <table>
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Nome</th>
-              <th>Email</th>
-              <th>Criado em</th>
-              <th>Ações</th>
-            </tr>
-          </thead>
-          {loading && (
-            <tbody>
+          <TableHeader />
+          <tbody>
+            {loading ? (
               <tr>
                 <td colSpan='5' className='text-center'>
                   Carregando...
                 </td>
               </tr>
-            </tbody>
-          )}
-          {!loading && (
-            <tbody>
-              {users.map((u) => (
-                <tr key={u.id}>
-                  <td>{u.id}</td>
-                  <td>{u.name}</td>
-                  <td>{u.email}</td>
-                  <td>{u.created_at}</td>
-                  <td>
-                    <Link className='btn-edit' to={'/users/' + u.id}>
-                      Editar
-                    </Link>
-                    &nbsp;
-                    <button
-                      className='btn-delete'
-                      onClick={(ev) => onDeleteClick(u)}
-                    >
-                      Deletar
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          )}
+            ) : (
+              users.map((u) => (
+                <TableRow key={u.id} data={u} onDeleteClick={onDeleteClick} />
+              ))
+            )}
+          </tbody>
         </table>
       </div>
     </div>
