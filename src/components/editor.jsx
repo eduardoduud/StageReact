@@ -19,7 +19,7 @@ import {
 import { HiMiniChevronDown } from 'react-icons/hi2';
 import { VscTextSize } from 'react-icons/vsc';
 import { BsListOl, BsListUl, BsThreeDots } from 'react-icons/bs';
-import { BubbleButton } from './BubbleButton.jsx';
+import { BubbleButton } from './buttons/BubbleButton.jsx';
 import axiosClient from '../axios-client.js';
 import Underline from '@tiptap/extension-underline';
 import Heading from '@tiptap/extension-heading';
