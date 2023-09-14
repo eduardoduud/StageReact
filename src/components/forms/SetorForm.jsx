@@ -1,18 +1,16 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import axiosClient from '../axios-client.js';
-import { useStateContext } from '../contexts/ContextProvider.jsx';
+import axiosClient from '../../axios-client.js';
+import { useStateContext } from '../../contexts/ContextProvider.jsx';
 
-export default function UserForm() {
+export default function SetorForm() {
   const navigate = useNavigate();
   let { id } = useParams();
-  const [user, setUser] = useState({
+  const [department, setDepartment] = useState({
     id: null,
     name: '',
-    email: '',
-    password: '',
-    password_confirmation: '',
   });
+  const [originalName, setOriginalName] = useState('');
   const [errors, setErrors] = useState(null);
   const [loading, setLoading] = useState(false);
   const { setNotification } = useStateContext();
@@ -22,10 +20,12 @@ export default function UserForm() {
     useEffect(() => {
       setLoading(true);
       axiosClient
-        .get(`/users/${id}`)
+        .get(`/departments/${id}`)
         .then(({ data }) => {
           setLoading(false);
-          setUser(data);
+          console.log(data);
+          setDepartment(data);
+          setOriginalName(data.name);
         })
         .catch(() => {
           setLoading(false);
@@ -35,12 +35,12 @@ export default function UserForm() {
 
   const onSubmit = (ev) => {
     ev.preventDefault();
-    if (user.id) {
+    if (department.id) {
       axiosClient
-        .put(`/users/${user.id}`, user)
+        .put(`/departments/${department.id}`, department)
         .then(() => {
-          setNotification('Usuário atualizado com sucesso');
-          navigate('/users');
+          setNotification('Setor atualizado com sucesso');
+          navigate('/departments');
         })
         .catch((err) => {
           const response = err.response;
@@ -48,12 +48,19 @@ export default function UserForm() {
             setErrors(response.data.errors);
           }
         });
+      fetch('https://ntfy.sh/eduardo_stage', {
+        method: 'POST',
+        body: 'Setor atualizado',
+        headers: {
+          Authorization: 'Bearer tk_98m0t6gbknq63pvodr2qalvt2yowl',
+        },
+      });
     } else {
       axiosClient
-        .post('/users', user)
+        .post('/departments', department)
         .then(() => {
-          setNotification('Usuário criado com sucesso');
-          navigate('/users');
+          setNotification('Setor criado com sucesso');
+          navigate('/departments');
         })
         .catch((err) => {
           const response = err.response;
@@ -61,13 +68,20 @@ export default function UserForm() {
             setErrors(response.data.errors);
           }
         });
+      fetch('https://ntfy.sh/eduardo_stage', {
+        method: 'POST',
+        body: 'Setor criado',
+        headers: {
+          Authorization: 'Bearer tk_98m0t6gbknq63pvodr2qalvt2yowl',
+        },
+      });
     }
   };
 
   return (
     <>
-      {user.id && <h1>Atualizar Usuário: {user.name}</h1>}
-      {!user.id && <h1>Novo Usuário</h1>}
+      {department.id && <h1>Atualizar Setor: {originalName}</h1>}
+      {!department.id && <h1>Novo Setor</h1>}
       <div className='card animated fadeInDown'>
         {loading && <div className='text-center'>Carregando...</div>}
         {errors && (
@@ -80,26 +94,11 @@ export default function UserForm() {
         {!loading && (
           <form onSubmit={onSubmit}>
             <input
-              value={user.name}
-              onChange={(ev) => setUser({ ...user, name: ev.target.value })}
-              placeholder='Nome'
-            />
-            <input
-              value={user.email}
-              onChange={(ev) => setUser({ ...user, email: ev.target.value })}
-              placeholder='Email'
-            />
-            <input
-              type='password'
-              onChange={(ev) => setUser({ ...user, password: ev.target.value })}
-              placeholder='Senha'
-            />
-            <input
-              type='password'
+              value={department.name}
               onChange={(ev) =>
-                setUser({ ...user, password_confirmation: ev.target.value })
+                setDepartment({ ...department, name: ev.target.value })
               }
-              placeholder='Confirme a senha'
+              placeholder='Nome'
             />
             <button className='btn'>Salvar</button>
           </form>

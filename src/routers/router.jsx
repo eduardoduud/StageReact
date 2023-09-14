@@ -1,17 +1,17 @@
 import { Navigate, createBrowserRouter } from 'react-router-dom';
-import Signup from './pages/Signup';
-import Login from './pages/Login';
-import Users from './pages/Users';
-import NotFound from './pages/NotFound';
-import DefaultLayout from './components/DefaultLayout';
-import GuestLayout from './components/GuestLayout';
-import Workflow from './pages/Workflow';
-import Setores from './pages/Setores';
-import WorkflowForm from './pages/WorkflowForm';
-import SetorForm from './pages/SetorForm';
-import SubSetorForm from './pages/SubSetorForm';
-import UserForm from './pages/UserForm';
-import { Editor } from './components/Editor';
+import Signup from '../pages/signup/Signup';
+import Login from '../pages/login/Login';
+import Users from '../pages/Users';
+import NotFound from '../pages/NotFound';
+import DefaultLayout from '../layouts/DefaultLayout';
+import GuestLayout from '../layouts/GuestLayout';
+import Workflow from '../pages/Workflow';
+import Setores from '../pages/Setores';
+import WorkflowForm from '../components/forms/WorkflowForm';
+import SetorForm from '../components/forms/SetorForm';
+import SubSetorForm from '../components/forms/SubSetorForm';
+import UserForm from '../components/forms/UserForm';
+import { Editor } from '../components/Editor';
 
 const router = createBrowserRouter([
   {

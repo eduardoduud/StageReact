@@ -1,13 +1,15 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import axiosClient from '../axios-client.js';
-import { useStateContext } from '../contexts/ContextProvider.jsx';
+import axiosClient from '../../axios-client.js';
+import { useStateContext } from '../../contexts/ContextProvider.jsx';
 
-export default function SetorForm() {
+export default function SubSetorForm() {
   const navigate = useNavigate();
   let { id } = useParams();
-  const [department, setDepartment] = useState({
+  const [departments, setDepartments] = useState([]);
+  const [subdepartment, setSubdepartment] = useState({
     id: null,
+    department_id: '',
     name: '',
   });
   const [originalName, setOriginalName] = useState('');
@@ -20,11 +22,10 @@ export default function SetorForm() {
     useEffect(() => {
       setLoading(true);
       axiosClient
-        .get(`/departments/${id}`)
+        .get(`/subdepartments/${id}`)
         .then(({ data }) => {
           setLoading(false);
-          console.log(data);
-          setDepartment(data);
+          setSubdepartment(data);
           setOriginalName(data.name);
         })
         .catch(() => {
@@ -33,14 +34,34 @@ export default function SetorForm() {
     }, [id]);
   }
 
+  if (!id)
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    useEffect(() => {
+      axiosClient
+        .get('/departments')
+        .then(({ data }) => {
+          if (data && Array.isArray(data.data)) {
+            const setoresArray = data.data;
+            setDepartments(setoresArray);
+          } else {
+            console.error(
+              'A resposta da API não contém uma matriz de setores válida.',
+            );
+          }
+        })
+        .catch((error) => {
+          console.error('Erro ao carregar os setores', error);
+        });
+    }, []);
+
   const onSubmit = (ev) => {
     ev.preventDefault();
-    if (department.id) {
+    if (subdepartment.id) {
       axiosClient
-        .put(`/departments/${department.id}`, department)
+        .put(`/subdepartments/${subdepartment.id}`, subdepartment)
         .then(() => {
           setNotification('Setor atualizado com sucesso');
-          navigate('/departments');
+          navigate(`/departments/${subdepartment.department_id}`);
         })
         .catch((err) => {
           const response = err.response;
@@ -48,19 +69,12 @@ export default function SetorForm() {
             setErrors(response.data.errors);
           }
         });
-      fetch('https://ntfy.sh/eduardo_stage', {
-        method: 'POST',
-        body: 'Setor atualizado',
-        headers: {
-          Authorization: 'Bearer tk_98m0t6gbknq63pvodr2qalvt2yowl',
-        },
-      });
     } else {
       axiosClient
-        .post('/departments', department)
+        .post('/subdepartments', subdepartment)
         .then(() => {
           setNotification('Setor criado com sucesso');
-          navigate('/departments');
+          navigate(`/departments/${subdepartment.department_id}`);
         })
         .catch((err) => {
           const response = err.response;
@@ -68,20 +82,13 @@ export default function SetorForm() {
             setErrors(response.data.errors);
           }
         });
-      fetch('https://ntfy.sh/eduardo_stage', {
-        method: 'POST',
-        body: 'Setor criado',
-        headers: {
-          Authorization: 'Bearer tk_98m0t6gbknq63pvodr2qalvt2yowl',
-        },
-      });
     }
   };
 
   return (
     <>
-      {department.id && <h1>Atualizar Setor: {originalName}</h1>}
-      {!department.id && <h1>Novo Setor</h1>}
+      {subdepartment.id && <h1>Atualizar Sub-setor: {originalName}</h1>}
+      {!subdepartment.id && <h1>Novo Sub-setor</h1>}
       <div className='card animated fadeInDown'>
         {loading && <div className='text-center'>Carregando...</div>}
         {errors && (
@@ -94,12 +101,28 @@ export default function SetorForm() {
         {!loading && (
           <form onSubmit={onSubmit}>
             <input
-              value={department.name}
+              value={subdepartment.name}
               onChange={(ev) =>
-                setDepartment({ ...department, name: ev.target.value })
+                setSubdepartment({ ...subdepartment, name: ev.target.value })
               }
               placeholder='Nome'
             />
+            <select
+              onChange={(ev) =>
+                setSubdepartment({
+                  ...subdepartment,
+                  department_id: ev.target.value,
+                })
+              }
+              placeholder='Setor'
+            >
+              <option value=''>Selecione um Setor</option>
+              {departments.map((setor) => (
+                <option key={setor.id} value={setor.id}>
+                  {setor.name} - {setor.id}
+                </option>
+              ))}
+            </select>
             <button className='btn'>Salvar</button>
           </form>
         )}

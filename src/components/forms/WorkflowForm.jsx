@@ -1,7 +1,7 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import axiosClient from '../axios-client.js';
-import { useStateContext } from '../contexts/ContextProvider.jsx';
+import axiosClient from '../../axios-client.js';
+import { useStateContext } from '../../contexts/ContextProvider.jsx';
 
 export default function WorkflowsForm() {
   const navigate = useNavigate();
