@@ -66,7 +66,12 @@ export default function Setores() {
               </tr>
             ) : (
               departments.map((u) => (
-                <TableRow key={u.id} data={u} onDeleteClick={onDeleteClick} />
+                <TableRow
+                  key={u.id}
+                  data={u}
+                  onDeleteClick={onDeleteClick}
+                  basePath='/departments'
+                />
               ))
             )}
           </tbody>

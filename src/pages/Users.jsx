@@ -63,7 +63,12 @@ export default function Users() {
               </tr>
             ) : (
               users.map((u) => (
-                <TableRow key={u.id} data={u} onDeleteClick={onDeleteClick} />
+                <TableRow
+                  key={u.id}
+                  data={u}
+                  onDeleteClick={onDeleteClick}
+                  basePath='/users'
+                />
               ))
             )}
           </tbody>

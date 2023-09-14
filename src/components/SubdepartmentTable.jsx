@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import axiosClient from '../axios-client.js';
+import TableHeader from '../components/table/TableHeader.jsx';
+import TableRow from '../components/table/TableRow.jsx';
 
 SubdepartmentTable.propTypes = {
   id: PropTypes.string.isRequired,
@@ -56,15 +58,7 @@ export default function SubdepartmentTable({ id, setNotification }) {
       </div>
       <div className='card animated fadeInDown'>
         <table>
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Nome</th>
-              <th>Última modificação</th>
-              <th>Criado em</th>
-              <th>Ações</th>
-            </tr>
-          </thead>
+          <TableHeader />
           <tbody>
             {loading ? (
               <tr>
@@ -89,7 +83,7 @@ export default function SubdepartmentTable({ id, setNotification }) {
                   <td>
                     <Link
                       className='btn-edit'
-                      to={'/departments/edit/' + subdepartment.id}
+                      to={'/subdepartments/edit/' + subdepartment.id}
                     >
                       Editar
                     </Link>

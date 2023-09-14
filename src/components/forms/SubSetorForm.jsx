@@ -25,8 +25,10 @@ export default function SubSetorForm() {
         .get(`/subdepartments/${id}`)
         .then(({ data }) => {
           setLoading(false);
-          setSubdepartment(data);
+          console.log(data);
+          setSubdepartment(data.subdepartment);
           setOriginalName(data.name);
+          console.log(subdepartment);
         })
         .catch(() => {
           setLoading(false);
@@ -34,25 +36,23 @@ export default function SubSetorForm() {
     }, [id]);
   }
 
-  if (!id)
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    useEffect(() => {
-      axiosClient
-        .get('/departments')
-        .then(({ data }) => {
-          if (data && Array.isArray(data.data)) {
-            const setoresArray = data.data;
-            setDepartments(setoresArray);
-          } else {
-            console.error(
-              'A resposta da API não contém uma matriz de setores válida.',
-            );
-          }
-        })
-        .catch((error) => {
-          console.error('Erro ao carregar os setores', error);
-        });
-    }, []);
+  useEffect(() => {
+    axiosClient
+      .get('/departments')
+      .then(({ data }) => {
+        if (data && Array.isArray(data.data)) {
+          const setoresArray = data.data;
+          setDepartments(setoresArray);
+        } else {
+          console.error(
+            'A resposta da API não contém uma matriz de setores válida.',
+          );
+        }
+      })
+      .catch((error) => {
+        console.error('Erro ao carregar os setores', error);
+      });
+  });
 
   const onSubmit = (ev) => {
     ev.preventDefault();

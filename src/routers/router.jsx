@@ -39,7 +39,7 @@ const router = createBrowserRouter([
         element: <UserForm key='userCreate' />,
       },
       {
-        path: '/users/:id',
+        path: '/users/edit/:id',
         element: <UserForm key='userUpdate' />,
       },
       {
@@ -64,7 +64,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/subdepartments/edit/:id',
-        element: <SetorForm key='setorUpdate' />,
+        element: <SubSetorForm key='setorUpdate' />,
       },
       {
         path: '/workflows/new',

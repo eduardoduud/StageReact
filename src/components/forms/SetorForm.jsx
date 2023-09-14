@@ -23,9 +23,9 @@ export default function SetorForm() {
         .get(`/departments/${id}`)
         .then(({ data }) => {
           setLoading(false);
-          console.log(data);
-          setDepartment(data);
+          setDepartment(data.department);
           setOriginalName(data.name);
+          console.log(department);
         })
         .catch(() => {
           setLoading(false);
