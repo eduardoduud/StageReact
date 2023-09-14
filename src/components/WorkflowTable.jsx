@@ -58,27 +58,30 @@ export default function WorkflowTable({ id, setNotification }) {
       <div className='card animated fadeInDown'>
         <table>
           <TableHeader />
-          {loading && (
-            <tbody>
+          <tbody>
+            {loading ? (
               <tr>
                 <td colSpan='5' className='text-center'>
                   Carregando...
                 </td>
               </tr>
-            </tbody>
-          )}
-          {!loading && (
-            <tbody>
-              {workflows.map((u) => (
+            ) : workflows && workflows.length > 0 ? (
+              workflows.map((u) => (
                 <TableRow
                   key={u.id}
                   data={u}
                   onDeleteClick={onDeleteClick}
                   basePath='/workflows'
                 />
-              ))}
-            </tbody>
-          )}
+              ))
+            ) : (
+              <tr>
+                <td colSpan='5' className='text-center'>
+                  Nenhum workflow encontrado.
+                </td>
+              </tr>
+            )}
+          </tbody>
         </table>
       </div>
     </div>
