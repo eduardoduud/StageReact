@@ -61,7 +61,7 @@ export default function Users() {
                   Carregando...
                 </td>
               </tr>
-            ) : (
+            ) : users && users.length > 0 ? (
               users.map((u) => (
                 <TableRow
                   key={u.id}
@@ -70,6 +70,12 @@ export default function Users() {
                   basePath='/users'
                 />
               ))
+            ) : (
+              <tr>
+                <td colSpan='5' className='text-center'>
+                  Nenhum usuário encontrado.
+                </td>
+              </tr>
             )}
           </tbody>
         </table>

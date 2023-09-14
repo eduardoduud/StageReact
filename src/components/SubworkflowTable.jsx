@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import axiosClient from '../axios-client.js';
+import TableHeader from '../components/table/TableHeader.jsx';
+import TableRow from '../components/table/TableRow.jsx';
 
 SubworkflowTable.propTypes = {
   id: PropTypes.string.isRequired,
@@ -29,7 +31,7 @@ export default function SubworkflowTable({ id, setNotification }) {
       });
   };
 
-  const onDeleteWorkflow = (workflow) => {
+  const onDeleteClick = (workflow) => {
     if (!window.confirm('Tem certeza que deseja deletar este Sub-setor?')) {
       return;
     }
@@ -55,15 +57,7 @@ export default function SubworkflowTable({ id, setNotification }) {
       </div>
       <div className='card animated fadeInDown'>
         <table>
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Nome</th>
-              <th>Última modificação</th>
-              <th>Criado em</th>
-              <th>Ações</th>
-            </tr>
-          </thead>
+          <TableHeader />
           <tbody>
             {loading ? (
               <tr>
@@ -72,32 +66,13 @@ export default function SubworkflowTable({ id, setNotification }) {
                 </td>
               </tr>
             ) : workflows && workflows.length > 0 ? (
-              workflows.map((workflow) => (
-                <tr key={workflow.id}>
-                  <td>{workflow.id}</td>
-                  <td>
-                    <Link className='workflow' to={`/workflows/${workflow.id}`}>
-                      {workflow.name}
-                    </Link>
-                  </td>
-                  <td>{workflow.updated_at}</td>
-                  <td>{workflow.created_at}</td>
-                  <td>
-                    <Link
-                      className='btn-edit'
-                      to={`/workflows/edit/${workflow.id}`}
-                    >
-                      Editar
-                    </Link>
-                    &nbsp;
-                    <button
-                      className='btn-delete'
-                      onClick={() => onDeleteWorkflow(workflow)}
-                    >
-                      Deletar
-                    </button>
-                  </td>
-                </tr>
+              workflows.map((u) => (
+                <TableRow
+                  key={u.id}
+                  data={u}
+                  onDeleteClick={onDeleteClick}
+                  basePath='/workflows'
+                />
               ))
             ) : (
               <tr>

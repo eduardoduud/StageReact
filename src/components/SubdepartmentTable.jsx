@@ -32,7 +32,7 @@ export default function SubdepartmentTable({ id, setNotification }) {
       });
   };
 
-  const onDeleteSubdepartment = (subdepartment) => {
+  const onDeleteClick = (subdepartment) => {
     if (!window.confirm('Tem certeza que deseja deletar este Sub-setor?')) {
       return;
     }
@@ -67,35 +67,13 @@ export default function SubdepartmentTable({ id, setNotification }) {
                 </td>
               </tr>
             ) : subdepartments && subdepartments.length > 0 ? (
-              subdepartments.map((subdepartment) => (
-                <tr key={subdepartment.id}>
-                  <td>{subdepartment.id}</td>
-                  <td>
-                    <Link
-                      className='workflow'
-                      to={'/subdepartments/' + subdepartment.id}
-                    >
-                      {subdepartment.name}
-                    </Link>
-                  </td>
-                  <td>{subdepartment.updated_at}</td>
-                  <td>{subdepartment.created_at}</td>
-                  <td>
-                    <Link
-                      className='btn-edit'
-                      to={'/subdepartments/edit/' + subdepartment.id}
-                    >
-                      Editar
-                    </Link>
-                    &nbsp;
-                    <button
-                      className='btn-delete'
-                      onClick={(ev) => onDeleteSubdepartment(subdepartment)}
-                    >
-                      Deletar
-                    </button>
-                  </td>
-                </tr>
+              subdepartments.map((u) => (
+                <TableRow
+                  key={u.id}
+                  data={u}
+                  onDeleteClick={onDeleteClick}
+                  basePath='/subdepartments'
+                />
               ))
             ) : (
               <tr>

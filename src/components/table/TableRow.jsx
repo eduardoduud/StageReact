@@ -9,7 +9,7 @@ TableRow.propTypes = {
     created_at: PropTypes.string.isRequired,
   }).isRequired,
   onDeleteClick: PropTypes.func.isRequired,
-  basePath: PropTypes.string.isRequired, // Adicione a prop basePath
+  basePath: PropTypes.string.isRequired,
 };
 
 export default function TableRow({ data, onDeleteClick, basePath }) {

@@ -64,7 +64,7 @@ export default function Setores() {
                   Carregando...
                 </td>
               </tr>
-            ) : (
+            ) : departments && departments.length > 0 ? (
               departments.map((u) => (
                 <TableRow
                   key={u.id}
@@ -73,6 +73,12 @@ export default function Setores() {
                   basePath='/departments'
                 />
               ))
+            ) : (
+              <tr>
+                <td colSpan='5' className='text-center'>
+                  Nenhum setor encontrado.
+                </td>
+              </tr>
             )}
           </tbody>
         </table>
