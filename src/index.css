@@ -44,7 +44,7 @@ input {
 }
 
 input:focus {
-  border-color: #b44d11;
+  border-color: #6d23f8;
 }
 
 select {
@@ -58,7 +58,7 @@ select {
 }
 
 select:focus {
-  border-color: #b44d11;
+  border-color: #6d23f8;
 }
 
 .textarea-form {
@@ -76,7 +76,7 @@ select:focus {
 }
 
 .textarea-form:focus {
-  border-color: #b44d11;
+  border-color: #6d23f8;
 }
 
 pre {
@@ -165,7 +165,7 @@ code {
 .btn-delete {
   font-family: 'Roboto', sans-serif;
   outline: 0;
-  background: #db6927;
+  background: #6d23f8;
   border: 0;
   text-decoration: none;
   padding: 15px;
@@ -297,7 +297,7 @@ table > tbody > tr > td {
 }
 
 .login-signup-form .form .message a {
-  color: #b44d11;
+  color: #6d23f8;
   text-decoration: none;
 }
 
@@ -309,7 +309,7 @@ table > tbody > tr > td {
 
 #defaultLayout aside {
   width: 240px;
-  background-color: #b44d11;
+  background-color: #7b00e0;
   padding: 1rem;
 }
 

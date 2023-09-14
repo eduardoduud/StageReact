@@ -22,8 +22,6 @@ import { BubbleButton } from './buttons/BubbleButton.jsx';
 import axiosClient from '../axios-client.js';
 import Underline from '@tiptap/extension-underline';
 import Heading from '@tiptap/extension-heading';
-import OrderedList from '@tiptap/extension-ordered-list';
-import ListItem from '@tiptap/extension-list-item';
 
 export function Editor() {
   const [editorReady, setEditorReady] = useState(false);
@@ -42,7 +40,7 @@ export function Editor() {
   });
 
   const editor = useEditor({
-    extensions: [StarterKit, Underline, Heading, OrderedList, ListItem],
+    extensions: [StarterKit, Underline, Heading],
     editorProps: {
       attributes: {
         class: 'text-editor__editor',
@@ -52,10 +50,6 @@ export function Editor() {
 
   Heading.configure({
     levels: [1, 2, 3],
-  });
-
-  OrderedList.configure({
-    itemTypeName: 'listItem',
   });
 
   const editorContent = useMemo(() => {
