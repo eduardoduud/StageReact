@@ -1,8 +1,8 @@
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 
 export function BubbleButton(props) {
   return (
-    <button className="bubble-btn" {...props}>
+    <button className='bubble-btn' {...props}>
       {props.children}
     </button>
   );

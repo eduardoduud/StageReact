@@ -1,7 +1,7 @@
-import { useNavigate, useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
-import axiosClient from "../axios-client.js";
-import { useStateContext } from "../contexts/ContextProvider.jsx";
+import { useNavigate, useParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import axiosClient from '../axios-client.js';
+import { useStateContext } from '../contexts/ContextProvider.jsx';
 
 export default function SubSetorForm() {
   const navigate = useNavigate();
@@ -10,9 +10,9 @@ export default function SubSetorForm() {
   const [subdepartment, setSubdepartment] = useState({
     id: null,
     department_id: '',
-    name: "",
+    name: '',
   });
-  const [originalName, setOriginalName] = useState("");
+  const [originalName, setOriginalName] = useState('');
   const [errors, setErrors] = useState(null);
   const [loading, setLoading] = useState(false);
   const { setNotification } = useStateContext();
@@ -35,23 +35,24 @@ export default function SubSetorForm() {
   }
 
   if (!id)
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  useEffect(() => {
-    axiosClient.get('/departments')
-    .then(({ data }) => {
-      if (data && Array.isArray(data.data)) {
-        const setoresArray = data.data;
-        setDepartments(setoresArray);
-      } else {
-        console.error('A resposta da API não contém uma matriz de setores válida.');
-      }
-    })
-    .catch(error => {
-      console.error('Erro ao carregar os setores', error);
-    });
-  
-
-  }, []);
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    useEffect(() => {
+      axiosClient
+        .get('/departments')
+        .then(({ data }) => {
+          if (data && Array.isArray(data.data)) {
+            const setoresArray = data.data;
+            setDepartments(setoresArray);
+          } else {
+            console.error(
+              'A resposta da API não contém uma matriz de setores válida.',
+            );
+          }
+        })
+        .catch((error) => {
+          console.error('Erro ao carregar os setores', error);
+        });
+    }, []);
 
   const onSubmit = (ev) => {
     ev.preventDefault();
@@ -59,7 +60,7 @@ export default function SubSetorForm() {
       axiosClient
         .put(`/subdepartments/${subdepartment.id}`, subdepartment)
         .then(() => {
-          setNotification("Setor atualizado com sucesso");
+          setNotification('Setor atualizado com sucesso');
           navigate(`/departments/${subdepartment.department_id}`);
         })
         .catch((err) => {
@@ -70,9 +71,9 @@ export default function SubSetorForm() {
         });
     } else {
       axiosClient
-        .post("/subdepartments", subdepartment)
+        .post('/subdepartments', subdepartment)
         .then(() => {
-          setNotification("Setor criado com sucesso");
+          setNotification('Setor criado com sucesso');
           navigate(`/departments/${subdepartment.department_id}`);
         })
         .catch((err) => {
@@ -88,10 +89,10 @@ export default function SubSetorForm() {
     <>
       {subdepartment.id && <h1>Atualizar Sub-setor: {originalName}</h1>}
       {!subdepartment.id && <h1>Novo Sub-setor</h1>}
-      <div className="card animated fadeInDown">
-        {loading && <div className="text-center">Carregando...</div>}
+      <div className='card animated fadeInDown'>
+        {loading && <div className='text-center'>Carregando...</div>}
         {errors && (
-          <div className="alert">
+          <div className='alert'>
             {Object.keys(errors).map((key) => (
               <p key={key}>{errors[key][0]}</p>
             ))}
@@ -104,19 +105,25 @@ export default function SubSetorForm() {
               onChange={(ev) =>
                 setSubdepartment({ ...subdepartment, name: ev.target.value })
               }
-              placeholder="Nome"
+              placeholder='Nome'
             />
             <select
-              onChange={ev => setSubdepartment({...subdepartment, department_id: ev.target.value})}
-              placeholder="Setor">
-              <option value="">Selecione um Setor</option>
-              {departments.map(setor => (
+              onChange={(ev) =>
+                setSubdepartment({
+                  ...subdepartment,
+                  department_id: ev.target.value,
+                })
+              }
+              placeholder='Setor'
+            >
+              <option value=''>Selecione um Setor</option>
+              {departments.map((setor) => (
                 <option key={setor.id} value={setor.id}>
                   {setor.name} - {setor.id}
                 </option>
               ))}
             </select>
-            <button className="btn">Salvar</button>
+            <button className='btn'>Salvar</button>
           </form>
         )}
       </div>
