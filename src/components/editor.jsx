@@ -18,7 +18,6 @@ import {
 } from 'react-icons/pi';
 import { HiMiniChevronDown } from 'react-icons/hi2';
 import { VscTextSize } from 'react-icons/vsc';
-import { BsListOl, BsListUl, BsThreeDots } from 'react-icons/bs';
 import { BubbleButton } from './buttons/BubbleButton.jsx';
 import axiosClient from '../axios-client.js';
 import Underline from '@tiptap/extension-underline';
@@ -106,22 +105,12 @@ export function Editor() {
     toggleDropdown();
   };
 
-  const handleButtonClick2 = (event) => {
-    event.stopPropagation();
-    toggleDropdown2();
-  };
-
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
-  const [isDropdownVisible2, setIsDropdownVisible2] = useState(false);
   const dropdownRef = useRef(null);
   const dropdownRef2 = useRef(null);
 
   const toggleDropdown = () => {
     setIsDropdownVisible(!isDropdownVisible);
-  };
-
-  const toggleDropdown2 = () => {
-    setIsDropdownVisible2(!isDropdownVisible2);
   };
 
   useEffect(() => {
@@ -245,29 +234,6 @@ export function Editor() {
                 >
                   <RxCode />
                 </BubbleButton>
-                <BubbleButton onClick={handleButtonClick2}>
-                  <BsThreeDots />
-                </BubbleButton>
-                {isDropdownVisible2 && (
-                  <div className='bubble-dropdown-container' ref={dropdownRef2}>
-                    <div className='bubble-dropdown-content'>
-                      <BubbleButton
-                        onClick={() =>
-                          editor.chain().focus().toggleOrderedList.run()
-                        }
-                      >
-                        <BsListOl />
-                      </BubbleButton>
-                      <BubbleButton
-                        onClick={() =>
-                          editor.chain().focus().toggleBulletList.run()
-                        }
-                      >
-                        <BsListUl />
-                      </BubbleButton>
-                    </div>
-                  </div>
-                )}
                 <BubbleButton
                   onClick={() => editor.chain().focus().toggleCodeBlock().run()}
                 >
